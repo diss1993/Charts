@@ -385,12 +385,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
             {
                 let barRect = buffer.rects[j]
                 
-                let cornerRadius: CGFloat = 4.0
-                let bezierPath = UIBezierPath(roundedRect: barRect,
-                                              byRoundingCorners: UIRectCorner.allCorners,
-                                              cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
                 
-                let roundedPath = bezierPath.cgPath
                 
                 if (!viewPortHandler.isInBoundsLeft(barRect.origin.x + barRect.size.width))
                 {
@@ -401,11 +396,27 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
                 {
                     break
                 }
+                let cornerRadius: CGFloat = 4.0
+                let bezierPath = UIBezierPath(roundedRect: barRect,
+                                              byRoundingCorners: UIRectCorner.allCorners,
+                                              cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
                 
+                let roundedPath = bezierPath.cgPath
                 context.addPath(roundedPath)
-                context.setFillColor(dataSet.barShadowColor.cgColor)
                 context.fill(barRect)
             }
+        }
+        
+        for j in stride(from: 0, to: buffer.rects.count, by: 1) {
+            let barRect = buffer.rects[j]
+            let cornerRadius: CGFloat = 4.0
+            let bezierPath = UIBezierPath(roundedRect: barRect,
+                                          byRoundingCorners: UIRectCorner.allCorners,
+                                          cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
+            
+            let roundedPath = bezierPath.cgPath
+            context.addPath(roundedPath)
+            context.fill(barRect)
         }
         
         let isSingleColor = dataSet.colors.count == 1
